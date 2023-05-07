@@ -78,6 +78,7 @@ button {
 }
 
 .gallery__iteminfo {
+  color: black;
   /* border-style: dotted; */
   display: flex;
   justify-content: space-evenly;
