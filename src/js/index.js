@@ -1,9 +1,6 @@
 import { fetchImgs } from './fetchImgs';
 
-import Notiflix from 'notiflix';
 var _ = require('lodash');
-const axios = require('axios').default;
-
 const DEBOUNCE_DELAY = 300;
 
 const ElForm = document.querySelector('#search-form');
@@ -20,9 +17,9 @@ function handleInput(event) {
 function handleSubmit(event) {
   event.preventDefault();
   const trimmedValue = ElForm.elements.searchQuery.value.trim();
-  console.log(trimmedValue);
+
   if (trimmedValue !== '')
-    fetchImgs(trimmedValue).then(returnedArray => console.log(returnedArray));
+    fetchImgs(trimmedValue).then(returnedArray => console.log('cccc'));
 }
 
 //console.log(searchEl);
