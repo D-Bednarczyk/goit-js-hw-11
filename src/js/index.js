@@ -13,6 +13,7 @@ ElForm.addEventListener('submit', handleSubmit);
 ElLoadMore.addEventListener('click', handleLoadMore);
 
 let page = 2;
+// w pierwszym klikneciu load more startuje od strony 2
 
 function handleInput(event) {
   const {
@@ -24,16 +25,25 @@ let lightboxGallery = new SimpleLightbox('.gallery a', {});
 
 function handleSubmit(event) {
   event.preventDefault();
+  page = 2;
   ElGallery.innerHTML = '';
   const trimmedValue = ElForm.elements.searchQuery.value.trim();
   if (trimmedValue !== '')
     fetchImgs(trimmedValue, 1).then(res => {
-      console.log(res);
-      res.data.hits.forEach(el => ElGallery.append(makeImgCard(el)));
-      ElLoadMore.classList.remove('hidden');
-      lightboxGallery.refresh();
-      Notiflix.Notify.info(`Hooray! We found ${res.data.totalHits} images.`);
-      //"Hooray! We found ${totalHits} images."
+      //console.log(res);
+      if (res.data.hits.length > 0) {
+        res.data.hits.forEach(el => ElGallery.append(makeImgCard(el)));
+        ElLoadMore.classList.remove('hidden');
+        const { height: cardHeight } = document
+          .querySelector('.gallery')
+          .firstElementChild.getBoundingClientRect();
+        window.scrollBy({
+          top: cardHeight * 10,
+          behavior: 'smooth',
+        });
+        lightboxGallery.refresh();
+        Notiflix.Notify.info(`Hooray! We found ${res.data.total} images.`);
+      }
     });
 }
 
@@ -42,9 +52,23 @@ function handleLoadMore(event) {
   const trimmedValue = ElForm.elements.searchQuery.value.trim();
   if (trimmedValue !== '')
     fetchImgs(trimmedValue, page).then(res => {
+      //console.log(res);
       res.data.hits.forEach(el => ElGallery.append(makeImgCard(el)));
-      lightboxGallery.refresh();
-    });
 
+      lightboxGallery.refresh();
+      if (res.data.hits.length < 40) {
+        ElLoadMore.classList.add('hidden');
+        Notiflix.Notify.failure(
+          "We're sorry, but you've reached the end of search results."
+        );
+      }
+      const { height: cardHeight } = document
+        .querySelector('.gallery')
+        .firstElementChild.getBoundingClientRect();
+      window.scrollBy({
+        top: cardHeight * 12,
+        behavior: 'smooth',
+      });
+    });
   page++;
 }
