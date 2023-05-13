@@ -34,13 +34,7 @@ function handleSubmit(event) {
       if (res.data.hits.length > 0) {
         res.data.hits.forEach(el => ElGallery.append(makeImgCard(el)));
         ElLoadMore.classList.remove('hidden');
-        const { height: cardHeight } = document
-          .querySelector('.gallery')
-          .firstElementChild.getBoundingClientRect();
-        window.scrollBy({
-          top: cardHeight * 10,
-          behavior: 'smooth',
-        });
+
         lightboxGallery.refresh();
         Notiflix.Notify.info(`Hooray! We found ${res.data.total} images.`);
       }
@@ -66,7 +60,7 @@ function handleLoadMore(event) {
         .querySelector('.gallery')
         .firstElementChild.getBoundingClientRect();
       window.scrollBy({
-        top: cardHeight * 12,
+        top: cardHeight * 4,
         behavior: 'smooth',
       });
     });
