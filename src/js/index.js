@@ -30,14 +30,14 @@ function handleSubmit(event) {
   const trimmedValue = ElForm.elements.searchQuery.value.trim();
   if (trimmedValue !== '')
     fetchImgs(trimmedValue, 1).then(res => {
-      //console.log(res);
-      if (res.data.hits.length > 0) {
+      console.log(res);
+      /*   if (res.data.hits.length > 0) {
         res.data.hits.forEach(el => ElGallery.append(makeImgCard(el)));
         ElLoadMore.classList.remove('hidden');
 
         lightboxGallery.refresh();
         Notiflix.Notify.info(`Hooray! We found ${res.data.total} images.`);
-      }
+      } */
     });
 }
 
